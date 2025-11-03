@@ -4,16 +4,14 @@ import pwalgorithms as pwa
 
 password = input("Enter password:")
 
-print("Analyzing a triple-word password ...")
+print("Analyzing password ...")
 time_start = time.time()
 
-# attempt to find password
-found, guesses = pwa.triple_words(password)
+found, guesses = pwa.password_word_break(password)
 time_end = time.time()
 
-# report results
 if (found):
-  print(password, "founded", guesses, "guesses")
+  print(password, "founded in", guesses, "guesses")
 else: 
-  print(password, "NOT found")
+  print(password, "not found in ", guesses, "guesses")
 print("Time:", format((time_end-time_start), ".8f"))

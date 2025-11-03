@@ -1,48 +1,18 @@
-# Module pwalgorithms
-
-# get words from password dictionary file
 def get_dictionary():
-  words = []
-  dictionary_file = open("dictionary.txt")
-  for line in dictionary_file:
-    # store word, omitting trailing new-line
-    words.append(line[:-1])
-  dictionary_file.close()
-  return words
+    with open('dictionary.txt') as f:
+        return set(line.strip() for line in f if line.strip())
 
-# analyze a one-word password
-def one_word(password):
-  words = get_dictionary()
-  guesses = 0
-  # get each word from the dictionary file
-  for w in words:
-    guesses += 1
-    if (w == password):
-      return True, guesses
-  return False, guesses
-
-def two_word(password):
+def password_word_break(password):
     words = get_dictionary()
-    for w1 in words:
-      for w2 in words:
-        if (w1+w2) == password:
-          print("exist")
-          return True
-    return False
+    n = len(password)
+    guesses = 0
+    can_segment = [False] * (n + 1)
+    can_segment[0] = True  
+    for i in range(1, n + 1): 
+        for j in range(0, i):
+            guesses += 1
+            if can_segment[j] and password[j:i] in words:
+                can_segment[i] = True
+                break
+    return can_segment[n], guesses
 
-
-def triple_words(password):
-  words = get_dictionary()
-  guesses = 0
-  with open('dictionary.txt') as f:
-    for w1 in words:
-      guesses+=1
-      if w1 in password:
-        for w2 in words:
-          guesses+=1
-          if w2 in password:
-            for w3 in words:
-              guesses+=1
-              if (w1+w2+w3) == password:
-                return True, guesses
-  return False, guesses
